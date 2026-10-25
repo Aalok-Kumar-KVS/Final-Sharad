@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SNAP — Movie recommendations for genre fans</title>
+    <meta
+      name="description"
+      content="SNAP recommends horror, sci-fi, anime and thriller deep cuts by mood."
+    />
+    <link rel="preconnect" href="https://images.pexels.com" />
+    <link rel="stylesheet" href="./src/styles.css">
+  </head>
+  <body>
+    <div id="bg-canvas" aria-hidden="true"></div>
+
+    <!-- Navbar -->
+    <header class="navbar">
+      <div class="navbar__inner">
+        <h1 class="wordmark">SNAP</h1>
+        <nav class="nav">
+          <button class="nav__btn is-active" data-nav="home" aria-label="Home">
+            <svg class="icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5"/><path d="M5 9v11h14V9"/></svg>
+            <span>Home</span>
+          </button>
+          <button class="nav__btn" data-nav="about" aria-label="About us">
+            <svg class="icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5"/><path d="M12 8h.01"/></svg>
+            <span>About</span>
+          </button>
+          <button class="nav__search" id="open-search" aria-label="Search">
+            <svg class="icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <span>Search</span>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Home page -->
+    <main id="page-home" class="page is-active">
+      <section class="featured" id="featured">
+        <img class="featured__img" alt="" />
+        <div class="featured__fade"></div>
+        <div class="featured__side-fade"></div>
+        <div class="featured__content">
+          <span class="tag tag--red">Featured</span>
+          <h2 class="featured__title"></h2>
+          <p class="featured__desc"></p>
+          <p class="featured__meta"></p>
+          <div class="featured__actions">
+            <button class="btn btn--solid" data-action="discover">
+              <svg class="icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              Discover
+            </button>
+            <button class="btn btn--ghost" data-action="more-info">
+              <svg class="icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5"/><path d="M12 8h.01"/></svg>
+              More Info
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <div id="search-context" class="search-context" hidden>
+        <p>SNAP analyzed your search and surfaced titles matching the mood, themes and genres you described. Hover a poster to preview, tap for the full plot.</p>
+      </div>
+
+      <section class="row">
+        <h2 class="row__title" id="row-title">NEW RELEASES</h2>
+        <div class="row__scroller-wrap">
+          <button class="row__arrow row__arrow--left" data-scroll="-1" aria-label="Scroll left">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+          </button>
+          <div class="row__scroller" id="movie-scroller"></div>
+          <button class="row__arrow row__arrow--right" data-scroll="1" aria-label="Scroll right">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p class="footer__brand">SNAP</p>
+      </footer>
+    </main>
+
+    <!-- About page -->
+    <main id="page-about" class="page">
+      <section class="about">
+        <div class="about__intro">
+          <p class="tag tag--green">About SNAP</p>
+          <h1 class="about__title">We watch the deep cuts so you don't have to.</h1>
+          <p class="about__lead">
+            SNAP is a recommendation engine built for genre fans — the people who
+            have already seen the famous ones and want the next obscurity. We focus
+            on horror, sci-fi, anime, and thriller deep cuts, and we match by mood,
+            not just by category. Tell us a feeling and we'll hand you a film.
+          </p>
+        </div>
+        <div class="team" id="team-grid"></div>
+        <footer class="footer">
+          <p class="footer__brand">SNAP</p>
+        </footer>
+      </section>
+    </main>
+
+    <!-- Search overlay -->
+    <div class="overlay" id="search-overlay" hidden>
+      <div class="overlay__backdrop"></div>
+      <div class="overlay__panel">
+        <div class="search-box">
+          <span class="search-box__icon" id="search-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          </span>
+          <input id="search-input" type="text" placeholder="Describe a mood, genre, or vibe…" autocomplete="off" />
+          <button class="search-box__close" id="close-search" aria-label="Close search">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </button>
+        </div>
+        <ul class="suggestions" id="suggestions"></ul>
+        <div class="chips" id="chips"></div>
+      </div>
+    </div>
+
+    <!-- Movie modal -->
+    <div class="overlay" id="movie-modal" hidden>
+      <div class="overlay__backdrop"></div>
+      <div class="modal">
+        <button class="modal__close" id="close-modal" aria-label="Close">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+        <div class="modal__hero">
+          <img class="modal__img" alt="" />
+          <div class="modal__hero-fade"></div>
+        </div>
+        <div class="modal__body">
+          <div class="modal__tags" id="modal-genres"></div>
+          <h3 class="modal__title" id="modal-title"></h3>
+          <p class="modal__desc" id="modal-desc"></p>
+          <div class="modal__moods" id="modal-moods"></div>
+          <a class="modal__trailer" id="modal-trailer" href="#" target="_blank" rel="noopener" hidden>
+            <svg class="icon" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            Watch trailer
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
